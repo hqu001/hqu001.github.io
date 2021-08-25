@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport"
+		content="height=device-height,width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="css/animate.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+
+<body>
+	<video width="100%" autoplay="autoplay" loop="loop" muted="muted"
+				 style="width: 100%;height: 100%;z-index:-1;
+				 object-fit: cover;position: absolute;top:0;left: 0;">
+		<source src="img/bg.mp4" type="video/mp4"></source>
+	</video>
+
+	<div class="welcome">
+		<div class="welcome-title animate__animated animate__flipInX">
+			<div>Take a look</div>
+			<div>what animal are you</div>
+		</div>
+
+		<button class="animate__animated animate__bounce animate__delay-2s" onclick="start()">Start</button>
+	</div>
+
+	<div class="result hide">
+		<div class="title" id="resultTitle"></div>
+		<img id="resultImgId" src="">
+	</div>
+
+	<div class="question-area hide">
+		<div class="lt-title">
+			<div class="idx">
+				<span id="currentIdx"></span>
+				<span>/</span>
+				<span id="totalIdx">-</span>
+			</div>
+			<div class="text">progress</div>
+		</div>
+		<div class="question-content"></div>
+		<div class="btn-area">
+			<button class="yes" onclick="choose('YES')">YES</button>
+			<button class="no" onclick="choose('NO')">NO</button>
+		</div>
+	</div>
+
+	<script>
+		const questionAreaDiv = document.querySelector('.question-area');
+		let questionIdx = 0 // 当前答题号
+
+		// 问题列表
+		const questions = [
+			{ id: 1, q: 'Once I set a goal, I will keep working hard to achieve it.' },
+			{ id: 2, q: 'I have a vibrant imagination.' },
+			{ id: 3, q: 'I think most people are basically well-meaning.' },
+			{ id: 4, q: 'I get bored at large parties.' },
+			{ id: 5, q: "Sometimes I feel like I'm worthless." },
+			{ id: 6, q: 'I often make decisions after careful consideration.' },
+			{ id: 7, q: "I'm a risk-taker and a rule-breaker." },
+			{ id: 8, q: 'At lively parties, I often show initiative and enjoy myself.' },
+			{ id: 9, q: 'I try to avoid large parties and noisy environments.' },
+			{ id: 10, q: 'when faced with pressure, I have a feeling of breaking down.' },
+			{ id: 11, q: 'I am inquisitive about many things.' },
+			{ id: 12, q: 'I like to plan things out from the beginning.' },
+			{ id: 13, q: 'I respect those modest people.' },
+			{ id: 14, q: 'I am willing and easy to accept new things, new ideas and new ideas.' },
+			{ id: 15, q: 'In a group, I want to be in a leadership position.' },
+			{ id: 16, q: 'I usually only buy what I need.' },
+			{ id: 17, q: 'I am a person who loves life.' },
+			{ id: 18, q: 'For me, maintaining the rapport of my group is very important.' },
+			{ id: 19, q: "It's important to me that other people do not constrain my personality." },
+			{ id: 20, q: 'Most people think of me as a warm and friendly person.' },
+		]
+
+		// 开始答题
+		function start() {
+			const welcomeDiv = document.querySelector('.welcome');
+			welcomeDiv.style.display = 'none';
+			questionAreaDiv.style.display = 'block';
+			next()
+		}
+
+		// 展示结果图片
+		function showResultImage() {
+			const resultDiv = document.querySelector('.result');
+			questionAreaDiv.style.display = 'none';
+			resultDiv.style.display = 'block';
+
+			result.sort((x, y) => {
+				return y.num - x.num;
+			});
+
+			let finalAnswerIdx = 0
+			if (result[0].num === result[1].num) { // 存在并列的答案，随机一个
+				finalAnswerIdx = Math.random() > 0.5 ? 0 : 1
+			}
+
+			//展示图片
+			const titleDiv = document.querySelector('#resultTitle')
+			let name = result[finalAnswerIdx].animal
+			titleDiv.innerHTML = name.charAt(0).toUpperCase() + name.slice(1)
+			const imgDiv = document.querySelector('#resultImgId')
+			imgDiv.src = result[finalAnswerIdx].img
+			imgDiv.style.marginTop = calcImageTop() + 'px'
+			addClass(imgDiv, 'animate__animated animate__zoomIn')
+		}
+
+		// 下一题
+		function next() {
+			questionIdx++;
+
+			console.log(questionIdx, questions.length)
+			if (questionIdx > questions.length) { // the last question
+				showResultImage()
+				return
+			}
+
+			const totalIdxDiv = document.querySelector('#totalIdx');
+			totalIdxDiv.innerHTML = questions.length
+
+			const idxDiv = document.querySelector('#currentIdx');
+			const contentDiv = document.querySelector('.question-content');
+			removeClass(idxDiv, 'animate__animated animate__fadeInTopLeft')
+			removeClass(contentDiv, 'animate__animated animate__backInDown')
+			setTimeout(() => {
+				idxDiv.innerHTML = questionIdx
+				contentDiv.innerHTML = questions[questionIdx - 1].q;
+
+				addClass(idxDiv, 'animate__animated animate__fadeInTopLeft')
+				addClass(contentDiv, 'animate__animated animate__backInDown')
+			}, 100);
+		}
+
+		// 答案数据集
+        const result = [
+            { animal: 'fox', num: 0, answer: [2, 7, 11, 14], img: 'img/fox.jpg'},
+            { animal: 'cat', num: 0, answer: [1, 6, 12, 16], img: 'img/cat.jpg' },
+            { animal: 'goat', num: 0, answer: [3, 15, 19, 13], img: 'img/goat.jpg' },
+            { animal: 'dog', num: 0, answer: [8, 17, 18, 20], img: 'img/dog.jpg' },
+            { animal: 'rabbit', num: 0, answer: [4, 5, 9, 10], img: 'img/rabbit.jpg' }
+		]
+
+		// 选择答案
+		function choose(a) {
+			// 用户选择YES，才会判断属于哪一类
+			if (a === 'YES') {
+				for (let animal of result)
+					if (animal.answer.includes(questionIdx)) {
+						animal.num += 1
+						break
+					}
+			}
+			console.log(result)
+
+			next();
+		}
+
+		function calcImageTop() {
+			let h = window.innerWidth * 800 / 565
+			let top = (window.innerHeight - 200 - h) / 2
+			return top
+		}
+
+		function addClass(ele, cls) {
+			if (!hasClass(ele, cls)) ele.className += " " + cls;
+		}
+		function removeClass(ele, cls) {
+			if (hasClass(ele, cls)) {
+				var reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
+				ele.className = ele.className.replace(reg, " ");
+			}
+		}
+		function hasClass(ele, cls) {
+			return ele.className.match(new RegExp("(\\s|^)" + cls + "(\\s|$)"));
+		}
+
+	</script>
+</body>
+
+</html>
