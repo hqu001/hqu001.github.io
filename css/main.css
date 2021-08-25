@@ -1,0 +1,87 @@
+video {
+  mix-blend-mode: screen;
+
+}
+body{
+	font-size: 20px;
+  color: #fff;
+  background-color: rgb(5, 1, 1);
+}
+button{
+  font-size: 16px;
+  background: rgb(255,172,78);
+  border: none;
+  box-shadow: 3px 3px 5px 0px #888;
+}
+.yes{
+  /* background-color: rgb(0,230,124); */
+  background-color: rgb(255,172,78);;
+}
+.no{
+  /* background-color: rgb(255,114,113); */
+  background-color: white;
+  color:black
+}
+.hide{
+	display: none;
+}
+
+
+/* welcome page 1 */
+.welcome{
+  margin-top: 50%;
+  font-size: 30px;
+  text-align: center;
+}
+.welcome .welcome-title{
+  animation-duration: 2s;
+}
+.welcome button{
+  height: 56px;
+    width: 200px;
+    margin: 200px 20px;
+}
+
+
+/* question page 2 */
+.question-content{
+      text-align: center;
+    margin-top: 130px;
+    margin-bottom: 20px;
+    height: 150px;
+}
+.btn-area{
+  display: flex;
+  flex-direction: column;
+}
+.btn-area button{
+  height: 56px;
+  margin: 15px 20px;
+}
+
+/* result page 3 */
+.result img{
+  width: 100%;
+}
+
+.result .title{
+  font-size: 50px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+
+/* left top number */
+.lt-title{
+  margin-top: 50px;
+  width: 120px;
+  text-align: center;
+}
+.lt-title .idx{
+  color: rgb(255, 172, 78);
+  font-size: 32px;
+}
+.lt-title .text{
+  /* margin-top: 10px; */
+  font-size: 16px;
+}
